@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+- 7
+sudo: false
+os:
+- linux
+cache:
+  directories: node_modules
+after_success:
+  - grunt
