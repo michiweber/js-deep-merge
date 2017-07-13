@@ -1,0 +1,31 @@
+{
+  "name": "js-deep-merge",
+  "version": "0.0.1",
+  "description": "Depp merging for Objects",
+  "license": "Proprietary software",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": {
+    "name": "Michael Weber",
+    "email": "me@michiweber.de",
+    "url": "https://github.com/michiweber"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-datetime": "^1.4.1",
+    "chai-like": "^0.1.10",
+    "mocha": "^2.1.0",
+    "sinon": "^1.17.6",
+    "sinon-chai": "^2.8.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-uglify": "^0.8.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
