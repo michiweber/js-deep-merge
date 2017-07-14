@@ -1,11 +1,10 @@
 {
   "name": "js-deep-merge",
-  "version": "0.0.1",
-  "description": "Depp merging for Objects",
-  "license": "Proprietary software",
+  "version": "0.0.2",
+  "description": "Deep merging for Objects and Arrays",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/michiweber/js-deep-merge"
   },
   "author": {
     "name": "Michael Weber",

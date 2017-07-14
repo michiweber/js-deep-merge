@@ -6,3 +6,11 @@ os:
 - linux
 cache:
   directories: node_modules
+after_success:
+  - grunt
+deploy:
+  provider: npm
+  email: me@michiweber.de
+  api_key: cf46048c-cf59-4b11-a9fa-6d256d7bd7f0
+  on:
+    tags: true
