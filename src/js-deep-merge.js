@@ -25,48 +25,68 @@
  * THE SOFTWARE.
  */
 
-var JSDeepObjectMerge = function(toMerge) {
-    var merge = function(obj1, obj2) {
-        Object.keys(obj2).forEach(function(key) {
-            if (obj2[key] instanceof Array) {
-                if (obj1[key] instanceof Array) {
-                    obj1[key].deepMerge(obj2[key]);
+if (typeof (michiweber) === 'undefined') {
+    michiweber = {};
+}
+if (typeof (michiweber['arrayToObject']) === 'undefined') {
+    michiweber['arrayToObject'] = function(target) {
+        if (typeof (target) !== 'object' && !(target instanceof Array)) { return target; }
+        var obj = {};
+        target.forEach(function(value, index) {
+           obj[index] = value;
+        });
+        return obj;
+    };
+}
+if (typeof (michiweber['objectToArray']) === 'undefined') {
+    michiweber['objectToArray'] = function(target) {
+        if (typeof (target) !== 'object' && !(target instanceof Object)) { return target; }
+        var arr = [];
+        Object.keys(target).forEach(function(key) {
+            arr.push(target[key]);
+        });
+        return arr;
+    };
+}
+if (typeof (michiweber['deepMerge']) === 'undefined') {
+    michiweber['deepMerge'] = function(target, source) {
+        if (typeof (target) !== 'object' || typeof (source) !== 'object') { return target; }
+        Object.keys(source).forEach(function(key) {
+            if (source[key] instanceof Array) {
+                if (target[key] instanceof Array) {
+                    target[key] = michiweber.arrayDeepMerge(target[key], source[key]);
                 } else {
-                    obj1[key] = obj2[key];
+                    target[key] = source[key];
                 }
-            } else if (obj2[key] instanceof Object) {
-                if (typeof(obj1[key]) === 'undefined') {
-                    obj1[key] = {};
+            } else if (source[key] instanceof Object) {
+                if (typeof(target[key]) !== 'object') {
+                    target[key] = source[key];
                 }
-                merge(obj1[key], obj2[key]);
+                if (typeof(target[key]) === 'undefined') {
+                    target[key] = {};
+                }
+                target[key] = michiweber.deepMerge(target[key], source[key]);
             } else {
-                obj1[key] = obj2[key];
+                target[key] = source[key];
             }
         });
+        return target;
     };
-    merge(this, toMerge);
-};
-var JSDeepArrayMerge = function(toMerge) {
-    var merge = function(arr1, arr2) {
-        arr2.forEach(function(element, index) {
-            if (element instanceof Array) {
-                if (typeof(arr1[index]) === 'undefined') {
-                    arr1[index] = [];
-                }
-                merge(arr1[index], arr2[index]);
-            } else if (element instanceof Object) {
-                if (arr1[index] instanceof Object) {
-                    arr1[index].deepMerge(element);
-                } else {
-                    arr1[index] = element;
-                }
-            } else {
-                arr1[index] = element;
-            }
-        });
+}
+if (typeof (michiweber['objectDeepMerge']) === 'undefined') {
+    michiweber['objectDeepMerge'] = function(target, source) {
+        return michiweber.deepMerge(target, source);
     };
-    merge(this, toMerge);
-};
+}
+if (typeof (michiweber['arrayDeepMerge']) === 'undefined') {
+    michiweber['arrayDeepMerge'] = function(target, source) {
+        var targetObject = michiweber.arrayToObject(target);
+        var sourceObject = michiweber.arrayToObject(source);
+        return michiweber.objectToArray(michiweber.deepMerge(targetObject, sourceObject));
+    };
+}
 
-Object.prototype.deepMerge = JSDeepObjectMerge;
-Array.prototype.deepMerge = JSDeepArrayMerge;
+Object.deepMerge = michiweber.objectDeepMerge;
+Object.toArray = michiweber.objectToArray;
+Array.deepMerge = michiweber.arrayDeepMerge;
+Array.toObject = michiweber.arrayToObject;

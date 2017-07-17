@@ -65,6 +65,9 @@ var objectWithUndefined6 = { mock1: [ 'mock1' ] };
 var objectWithUndefined7 = { mock1: 'mock1' };
 var objectWithUndefined8 = { mock1: undefined };
 
+var finalArray1 = [{"entry":{"key":"mock1","value":"mock1value"},"children":[{"entry":{"key":"mock2","value":"mock2value","value2":"mock2value2"}},{"entry":{"key":"mock3","value":"mock3value"}},{"entry":{"key":"mock4","value1":"mock4value","options":[{"key":0,"value":"A"},{"key":1,"value":"B"},{"key":2,"value":"C"},{"key":3,"value":"D"}]}},{"entry":{"key":"mock5","value":"mock5value"},"children":[{"entry":{"key":"mock6","value":"mock6value"},"children":[{"entry":{"key":"mock7","value":"mock7value"}},{"entry":{"key":"mock8","label":"mock8value"}}]}]}]}];
+var finalArray2 = [{"entry":{"key":"mock1","value":"mock1value"},"children":[{"entry":{"key":"mock2","value":"mock2value","value2":"mock2value2"}},{"entry":{"key":"mock4","value1":"mock4value","options":[{"key":0,"value":"A"},{"key":1,"value":"B"},{"key":2,"value":"C"},{"key":3,"value":"D"}]}},{"entry":{"key":"mock3","value":"mock3value"}},{"entry":{"key":"mock5","value":"mock5value"},"children":[{"entry":{"key":"mock6","value":"mock6value"},"children":[{"entry":{"key":"mock7","value":"mock7value"}},{"entry":{"key":"mock8","label":"mock8value"}}]}]}]}];
+
 /* Expectations */
 var simpleMergedObject1 = { mock1: 'mock1', mock2: 'mock2' };
 var simpleMergedObject2 = { mock1: 'mock3', mock2: 'mock2' };
@@ -73,6 +76,8 @@ var complexMergedObject1 = { mock1: { mock1a: 'mock1a' }, mock2: { mock2a: 'mock
 var complexMergedObject2 = { mock1: { mock1a: 'mock1a', mock2a: 'mock2a' } };
 var complexMergedObject3 = { mock1: { mock1a: 'mock1b', mock2a: 'mock2a' } };
 var complexMergedObject4 = { mock1: { mock1a: { mock1a1: 'mock1a1' }, mock2a: { mock2a1: 'mock2a1' }, mock3a: { mock3a1: 'mock3a1' }, mock4a: { mock4a1: 'mock4a1' } } };
+
+var simpleConvertedArray = { 0 : 'mock1' };
 
 var simpleMergedArray1 = [ 'mock2' ];
 var complexMergedArray1 = [ [ 'mock3' ], 'mock2' ];
@@ -96,54 +101,70 @@ var objectWithUndefinedMerged3 = { mock1: [ 'mock1' ] };
 var objectWithUndefinedMerged4 = { mock1: undefined };
 
     /* Test */
+describe('Convert Array to Object', function(){
+    it('should convert a simple array into an object', function() {
+        var arr1 = Object.assign([], simpleArray1);
+
+        var obj1 = Array.toObject(arr1);
+        obj1.should.be.like(simpleConvertedArray);
+    });
+});
+describe('Convert Object to Array', function(){
+    it('should convert a simple object into an array', function() {
+        var obj1 = Object.assign({}, simpleObject1);
+
+        var arr1 = Object.toArray(obj1);
+        arr1.should.be.like(simpleArray1);
+    });
+});
 describe('Object merge', function(){
     it('should merge two simple objects', function() {
         var obj1 = Object.assign({}, simpleObject1);
         var obj2 = Object.assign({}, simpleObject2);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(simpleMergedObject1);
     });
     it('should merge two simple objects and replace one value', function() {
         var obj1 = Object.assign({}, simpleObject1);
         var obj2 = Object.assign({}, simpleObject3);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(simpleMergedObject2);
     });
     it('should merge two complex objects', function() {
         var obj1 = Object.assign({}, complexObject1);
         var obj2 = Object.assign({}, complexObject2);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(complexMergedObject1);
     });
     it('should merge two complex objects and deep merge', function() {
         var obj1 = Object.assign({}, complexObject1);
         var obj2 = Object.assign({}, complexObject3);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(complexMergedObject2);
     });
     it('should merge two complex objects, deep merge and replace deep', function() {
         var obj1 = Object.assign({}, complexObject1);
         var obj2 = Object.assign({}, complexObject4);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(complexMergedObject3);
     });
     it('should merge two more complex objects', function() {
         var obj1 = Object.assign({}, complexObject5);
         var obj2 = Object.assign({}, complexObject6);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(complexMergedObject4);
     });
     it('should merge two deep objects', function() {
         var obj1 = Object.assign({}, complexObject7);
         var obj2 = Object.assign({}, complexObject8);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(complexObject8);
     });
 });
@@ -153,21 +174,21 @@ describe('Array merge', function() {
         var arr1 = Object.assign([], simpleArray1);
         var arr2 = Object.assign([], simpleArray2);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(simpleMergedArray1);
     });
     it('should merge two complex arrays', function() {
         var arr1 = Object.assign([], complexArray1);
         var arr2 = Object.assign([], complexArray2);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(complexMergedArray1);
     });
     it('should merge two more complex arrays', function() {
         var arr1 = Object.assign([], complexArray3);
         var arr2 = Object.assign([], complexArray4);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(complexMergedArray2);
     });
 });
@@ -177,42 +198,42 @@ describe('Array and Object merge', function() {
         var arr1 = Object.assign([], arrayWithObject1);
         var arr2 = Object.assign([], arrayWithObject2);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(arrayWithObjectMerged1);
     });
     it('should merge two complex arrays with objects', function() {
         var arr1 = Object.assign([], arrayWithObject3);
         var arr2 = Object.assign([], arrayWithObject4);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(arrayWithObjectMerged2);
     });
     it('should merge two complex arrays with objects and replace one element in object', function() {
         var arr1 = Object.assign([], arrayWithObject5);
         var arr2 = Object.assign([], arrayWithObject6);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(arrayWithObjectMerged3);
     });
     it('should merge two complex arrays with objects and other mixed attributes', function() {
         var arr1 = Object.assign([], arrayWithObject7);
         var arr2 = Object.assign([], arrayWithObject8);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(arrayWithObjectMerged4);
     });
     it('should merge two deep arrays with objects, arrays and other mixed attributes', function() {
         var arr1 = Object.assign([], deepArray1);
         var arr2 = Object.assign([], deepArray2);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(deepMergedArray);
     });
     it('should merge two deep objects with objects, arrays and other mixed attributes', function() {
         var obj1 = Object.assign({}, deepObject1);
         var obj2 = Object.assign({}, deepObject2);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(deepMergedObject);
     });
 });
@@ -222,56 +243,66 @@ describe('Undefined merge', function() {
         var arr1 = Object.assign([], arrayWithUndefined1);
         var arr2 = Object.assign([], arrayWithUndefined2);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(arrayWithUndefined2);
     });
     it('should merge two simple arrays with undefined elements', function() {
         var arr1 = Object.assign([], arrayWithUndefined3);
         var arr2 = Object.assign([], arrayWithUndefined4);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(arrayWithUndefinedMerged1);
     });
     it('should merge two simple arrays with undefined elements', function() {
         var arr1 = Object.assign([], arrayWithUndefined5);
         var arr2 = Object.assign([], arrayWithUndefined6);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(arrayWithUndefinedMerged2);
     });
     it('should merge two simple arrays with undefined elements', function() {
         var arr1 = Object.assign([], arrayWithUndefined7);
         var arr2 = Object.assign([], arrayWithUndefined8);
 
-        arr1.deepMerge(arr2);
+        arr1 = Array.deepMerge(arr1, arr2);
         arr1.should.be.like(arrayWithUndefinedMerged3);
     });
     it('should merge two simple objects with undefined elements', function() {
         var obj1 = Object.assign({}, objectWithUndefined1);
         var obj2 = Object.assign({}, objectWithUndefined2);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(objectWithUndefinedMerged1);
     });
     it('should merge two simple objects with undefined elements', function() {
         var obj1 = Object.assign({}, objectWithUndefined3);
         var obj2 = Object.assign({}, objectWithUndefined4);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(objectWithUndefinedMerged2);
     });
     it('should merge two simple objects with undefined elements', function() {
         var obj1 = Object.assign({}, objectWithUndefined5);
         var obj2 = Object.assign({}, objectWithUndefined6);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(objectWithUndefinedMerged3);
     });
     it('should merge two simple objects with undefined elements', function() {
         var obj1 = Object.assign({}, objectWithUndefined7);
         var obj2 = Object.assign({}, objectWithUndefined8);
 
-        obj1.deepMerge(obj2);
+        obj1 = Object.deepMerge(obj1, obj2);
         obj1.should.be.like(objectWithUndefinedMerged4);
+    });
+});
+
+describe('Final tests', function() {
+    it('should merge two arrays with deep object and array hierarchy', function() {
+        var arr1 = Object.assign([], finalArray1);
+        var arr2 = Object.assign([], finalArray2);
+
+        arr1 = Array.deepMerge(arr1, arr2);
+        arr1.should.be.like(finalArray2);
     });
 });
