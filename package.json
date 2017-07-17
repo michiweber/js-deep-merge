@@ -1,6 +1,6 @@
 {
   "name": "js-deep-merge",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Deep merging for Objects and Arrays",
   "repository": {
     "type": "git",
@@ -11,6 +11,10 @@
     "email": "me@michiweber.de",
     "url": "https://github.com/michiweber"
   },
+  "files": [
+    "dist/"
+  ],
+  "main": "dist/js-deep-merge.min.js",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
