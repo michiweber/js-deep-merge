@@ -1,6 +1,6 @@
 {
   "name": "js-deep-merge",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Deep merging for Objects and Arrays",
   "repository": {
     "type": "git",
